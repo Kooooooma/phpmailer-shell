@@ -1,0 +1,33 @@
+{
+    "name": "PHPMailerShell/PHPMailerShell",
+    "type": "library",
+    "description": "Provide a way for PHPMailer to send mail in syna or async.",
+    "authors": [
+        {
+            "name": "Koma",
+            "email": "komazhang@foxmail.com"
+        }
+    ],
+    "support": {
+        "email": "komazhang@foxmail.com"
+    },
+    "require": {
+        "php": ">=5.3",
+        "phpmailer/phpmailer": "~5.2",
+        "apache/log4php": "~2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPMailerShell\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PHPMailerShellTest\\": "tests/"
+        }
+    },
+    "license": "LGPL-2.1"
+}
