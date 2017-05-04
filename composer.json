@@ -1,5 +1,5 @@
 {
-    "name": "PHPMailerShell/PHPMailerShell",
+    "name": "phpmailer-shell/phpmailer-shell",
     "type": "library",
     "description": "Provide a way for PHPMailer to send mail in syna or async.",
     "authors": [
