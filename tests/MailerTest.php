@@ -27,7 +27,7 @@ class MailerTest extends TestCase
             'topic' => 'tickets_mail',
         ));
 
-        $ret = $mailer->SMTPAuth('kefu.tickets@easemob.com', '5fa86E73907aB7==')
+        $ret = $mailer->SMTPAuth('kefu.tickets@easemob.com', '5fa86E')
                 ->setHost('smtp.exmail.qq.com', 587)
                 ->setFrom('kefu.tickets@easemob.com', '工作宝')
                 ->setSubject('test for phpmailerShell')
