@@ -36,7 +36,7 @@ class MailerTest extends TestCase
                 ->setBody('<h1>this is a h1</h1>')
 //                ->addAttachment('/tmp/1.png')
 //                ->addAttachment('/tmp/2.png')
-                ->send(true);
+                ->send(false);
 
         var_dump($ret);
     }

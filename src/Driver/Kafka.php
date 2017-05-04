@@ -95,7 +95,7 @@ class Kafka
         if ( $message->err == RD_KAFKA_RESP_ERR_NO_ERROR ) {
             $payload = json_decode($message->payload, true);
 
-            $sender = '\PHPMailerShell\Sender\\'.$this->sender.'Sender';
+            $sender = 'PHPMailerShell\Sender\\'.$this->sender.'Sender';
             $sender = new $sender($payload);
 
             return $sender->send();

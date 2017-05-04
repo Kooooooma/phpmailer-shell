@@ -155,7 +155,7 @@ class Mailer
                 $sender = new SMTPSender($this->getOptions());
             }
         } else {
-            $driver = '\PHPMailerShell\Driver\\'.self::$config->driver['type'];
+            $driver = 'PHPMailerShell\Driver\\'.self::$config->driver['type'];
             $sender = new $driver($this->getOptions());
         }
 
@@ -164,7 +164,7 @@ class Mailer
 
     public function consume()
     {
-        $driver = '\PHPMailerShell\Driver\\'.self::$config->driver['type'];
+        $driver = 'PHPMailerShell\Driver\\'.self::$config->driver['type'];
         $driver = new $driver();
 
         $driver->consume();
