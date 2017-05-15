@@ -29,5 +29,5 @@
             "PHPMailerShellTest\\": "tests/"
         }
     },
-    "license": "LGPL-2.1"
+    "license": "Apache License 2.0"
 }
