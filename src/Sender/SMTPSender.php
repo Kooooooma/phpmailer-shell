@@ -18,11 +18,10 @@ namespace PHPMailerShell\Sender;
  */
 class SMTPSender
 {
-    private $options = null;
-
-    public function __construct($options)
+    public function __construct(\PHPMailerShell\Sender\Sender $sender)
     {
-        $this->options = $options;
+        $this->sender   = $sender;
+        $this->mailBean = $sender->mailBean;
     }
 
     public function send()
@@ -32,28 +31,32 @@ class SMTPSender
         $phpMailer->isSMTP();
         $phpMailer->SMTPDebug = 2;
 
-        $phpMailer->Host = $this->options['host'];
-        $phpMailer->Port = $this->options['port'];
+        $phpMailer->Host = $this->sender->host;
+        $phpMailer->Port = $this->sender->port;
 
-        $phpMailer->SMTPAuth = $this->options['auth'];
-        $phpMailer->Username = $this->options['username'];
-        $phpMailer->Password = $this->options['username'];
+        $phpMailer->SMTPAutoTLS = $this->sender->autoTSL;
+        $phpMailer->SMTPSecure  = $this->sender->secure;
 
-        $phpMailer->setFrom($this->options['from']['address'], $this->options['from']['name']);
-
-        $phpMailer->addReplyTo($this->options['replayTo']['address'], $this->options['replayTo']['name']);
-
-        foreach ( $this->options['address'] as $item) {
-            $phpMailer->addAddress($item['address'], $item['name']);
+        $phpMailer->SMTPAuth = $this->sender->auth;
+        if ( $phpMailer->SMTPAuth ) {
+            $phpMailer->Username = $this->sender->username;
+            $phpMailer->Password = $this->sender->password;
         }
 
-        $phpMailer->Subject = $this->options['subject'];
+        $phpMailer->setFrom($this->mailBean->getFrom(), $this->mailBean->getFromName());
 
-        $phpMailer->msgHTML($this->options['body']);
-
-        foreach ( $this->options['attachment'] as $item ) {
-            $phpMailer->addAttachment($item);
+        foreach ( $this->mailBean->getReplyTo() as $address => $name ) {
+            $phpMailer->addReplyTo($address, $name);
         }
+
+        foreach ( $this->mailBean->getTo() as $address => $name ) {
+            $phpMailer->addAddress($address, $name);
+        }
+
+        $phpMailer->Subject = $this->mailBean->getSubject();
+
+        //支持发送html内容
+        $phpMailer->msgHTML($this->mailBean->getBody());
 
         if ( !$phpMailer->send() ) {
             return $phpMailer->ErrorInfo;

@@ -12,7 +12,8 @@
 namespace PHPMailerShell;
 
 use PHPMailerShell\Conf\Config;
-use PHPMailerShell\Sender\SMTPSender;
+use PHPMailerShell\Receiver\Receiver;
+use PHPMailerShell\Sender\Sender;
 
 /**
  * Main class
@@ -23,28 +24,6 @@ class Mailer
 {
     public static $config = null;
 
-    private $isSMTP = true;
-    private $SMTPAuth = false;
-    private $SMTPUsername = '';
-    private $SMTPPassword = '';
-
-    private $host = '';
-    private $port = '';
-
-    private $from = '';
-
-    private $replayTo = array();
-
-    private $addresses = array();
-
-    private $cc = array();
-
-    private $subject = '';
-
-    private $body = '';
-
-    private $attachments = array();
-
     public function __construct()
     {
         date_default_timezone_set('UTC');
@@ -52,140 +31,34 @@ class Mailer
         $this->initConfig();
     }
 
-    public function isSMTP($isSMTP = true)
-    {
-        $this->isSMTP = $isSMTP;
-
-        return $this;
-    }
-
-    public function SMTPAuth($username, $password)
-    {
-        $this->SMTPAuth = true;
-        $this->SMTPUsername = $username;
-        $this->SMTPPassword = $password;
-
-        return $this;
-    }
-
-    public function setHost($host, $port)
-    {
-        $this->host = $host;
-        $this->port = $port;
-
-        return $this;
-    }
-
-    public function setFrom($address, $name)
-    {
-        $this->from = array(
-            'address' => $address,
-            'name' => $name
-        );
-
-        return $this;
-    }
-
-    /**
-     * 添加快捷回复人
-     *
-     * @param $address
-     * @param $name
-     * @return $this
-     */
-    public function addReplyTo($address, $name)
-    {
-        $this->replayTo = array(
-            'address' => $address,
-            'name' => $name
-        );
-
-        return $this;
-    }
-
-    /**
-     * 添加收件人
-     *
-     * @param $address
-     * @param $name
-     * @return $this
-     */
-    public function addAddress($address, $name)
-    {
-        $this->addresses[] = array(
-            'address' => $address,
-            'name' => $name
-        );
-
-        return $this;
-    }
-
-    public function setSubject($subject)
-    {
-        $this->subject = $subject;
-
-        return $this;
-    }
-
-    public function setBody($body)
-    {
-        $this->body = $body;
-
-        return $this;
-    }
-
-    public function addAttachment($path)
-    {
-        $this->attachments[] = $path;
-
-        return $this;
-    }
-
     /**
      * 发送邮件
-     * 根据 $nonblock 参数指定是异步发送还是同步发送
+     * 根据 $async 参数指定是异步发送还是同步发送
      *
-     * @param bool $nonblock 设置为 true 表示异步发送
-     * @return bool|string
+     * @param \PHPMailerShell\MailBean $mailBean 邮件实体
+     * @param bool $async
+     *
+     * @return mixed
      */
-    public function send($nonblock = false)
+    public function send(\PHPMailerShell\MailBean $mailBean, $async = false)
     {
-        if ( !$nonblock ) {
-            if ( $this->isSMTP ) {
-                $sender = new SMTPSender($this->getOptions());
-            }
-        } else {
-            $driver = 'PHPMailerShell\Driver\\'.self::$config->driver['type'];
-            $sender = new $driver($this->getOptions());
-        }
+        $sender = new Sender();
 
-        return $sender->send();
+        return $sender->send($mailBean, $async);
     }
 
     public function consume()
     {
-        $driver = 'PHPMailerShell\Driver\\'.self::$config->driver['type'];
-        $driver = new $driver();
+        $sender = new Sender();
 
-        $driver->consume();
+        return $sender->consume();
     }
 
-    public function getOptions()
+    public function receive()
     {
-        return array(
-            'username'   => $this->SMTPUsername,
-            'password'   => $this->SMTPPassword,
-            'auth'       => $this->isSMTP ? $this->SMTPAuth : true,
-            'host'       => $this->host,
-            'port'       => $this->port,
-            'from'       => $this->from,
-            'replayTo'   => $this->replayTo,
-            'address'    => $this->addresses,
-            'cc'         => $this->cc,
-            'subject'    => $this->subject,
-            'body'       => $this->body,
-            'attachment' => $this->attachments
-        );
+        $receiver = new Receiver();
+
+        return $receiver->receive();
     }
 
     private function initConfig()

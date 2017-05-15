@@ -18,29 +18,57 @@ namespace PHPMailerShell\Conf;
  */
 class Config
 {
-    public $driver = array(
-        'type'   => 'Kafka',
-        'sender' => 'SMTP'
+    public $sender = array(
+        'class'  => 'SMTPSender',
+        'driver' => 'Kafka'
     );
 
-    public function setType($type)
+    public $receiver = array(
+        'class' => 'IMAPReceiver'
+    );
+
+    public function setReceiver($receiver)
     {
-        $this->driver['type'] = $type;
+        $this->receiver['class'] = $receiver;
+
+        return $this;
+    }
+
+    public function setReceiverConfig($options)
+    {
+        $this->receiver[$this->receiver['class']] = $options;
 
         return $this;
     }
 
     public function setSender($sender)
     {
-        $this->driver['sender'] = $sender;
+        $this->sender['class'] = $sender;
+
+        return $this;
+    }
+
+    public function setSenderConfig($options)
+    {
+        $sender = $this->sender['class'];
+        $this->sender[$sender] = $options;
+
+        return $this;
+    }
+
+    public function setDriver($driver)
+    {
+        $this->sender['driver'] = $driver;
 
         return $this;
     }
 
     public function setDriverConfig($options)
     {
-        $this->driver[$this->driver['type']] = $options;
+        $driver = isset($this->sender['driver']) ? $this->sender['driver'] : '';
+        if ( $driver == '' ) return false;
 
+        $this->sender[$driver] = $options;
         return $this;
     }
 

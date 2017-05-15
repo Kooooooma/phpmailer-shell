@@ -11,8 +11,6 @@
 
 namespace PHPMailerShell\Driver;
 
-use PHPMailerShell\Mailer;
-
 /**
  * 异步邮件发送 Kafka 驱动类
  *
@@ -20,19 +18,12 @@ use PHPMailerShell\Mailer;
  */
 class Kafka
 {
-    private $options = array();
-    private $config  = array();
-    private $sender  = '';
-
-    public function __construct($options = array())
+    public function __construct($config)
     {
-        $this->options = $options;
-        $this->sender  = Mailer::$config->driver['sender'];
-        $this->type    = Mailer::$config->driver['type'];
-        $this->config  = Mailer::$config->driver[$this->type];
+        $this->config = $config;
     }
 
-    public function send()
+    public function send($payload)
     {
         $conf = new \RdKafka\Conf();
         $conf->set('bootstrap.servers', $this->config['bootstrap.servers']);
@@ -64,7 +55,7 @@ class Kafka
         $producerTopic->produce(
             RD_KAFKA_PARTITION_UA,
             0,
-            json_encode($this->options)
+            $payload
         );
 
         //-1 poll the events sync
@@ -93,12 +84,7 @@ class Kafka
 
         $message = $consumer->consume(30*1000);
         if ( $message->err == RD_KAFKA_RESP_ERR_NO_ERROR ) {
-            $payload = json_decode($message->payload, true);
-
-            $sender = 'PHPMailerShell\Sender\\'.$this->sender.'Sender';
-            $sender = new $sender($payload);
-
-            return $sender->send();
+            return $message->payload;
         }
 
         return $message->err;

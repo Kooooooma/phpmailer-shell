@@ -2,6 +2,9 @@
     <testsuites>
         <testsuite name="PHPMailerShell Test Suite">
             <directory>.</directory>
+            <!--<file>TestSyncSend.php</file>-->
+            <!--<file>TestAsyncSend.php</file>-->
+            <file>TestReceive.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

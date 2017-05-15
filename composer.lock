@@ -4,37 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "19464c84f06f11b538857bb2a7cb74b5",
+    "content-hash": "e756a5c2427fce5502c49c766f690439",
     "packages": [
         {
-            "name": "apache/log4php",
-            "version": "2.3.0",
+            "name": "php-imap/php-imap",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
-                "url": "https://git-wip-us.apache.org/repos/asf/logging-log4php.git",
-                "reference": "cac428b6f67d2035af39784da1d1a299ef42fcf2"
+                "url": "https://github.com/barbushin/php-imap.git",
+                "reference": "949826c9b109113ec93a5214e85afce31cba000c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/barbushin/php-imap/949826c9b109113ec93a5214e85afce31cba000c.zip",
+                "reference": "949826c9b109113ec93a5214e85afce31cba000c",
+                "shasum": ""
             },
             "require": {
-                "php": ">=5.2.7"
+                "ext-imap": "*",
+                "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "src/main/php/"
-                ]
+                "psr-4": {
+                    "PhpImap\\": "src/PhpImap/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache-2.0"
+                "BSD 3-Clause"
             ],
-            "description": "A versatile logging framework for PHP",
-            "homepage": "http://logging.apache.org/log4php/",
+            "authors": [
+                {
+                    "name": "Sergey Barbushin",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                }
+            ],
+            "description": "PHP class to access mailbox by POP3/IMAP/NNTP using IMAP extension",
+            "homepage": "https://github.com/barbushin/php-imap",
             "keywords": [
-                "log",
-                "logging",
+                "imap",
+                "mail",
                 "php"
             ],
-            "time": "2012-10-26T09:13:25+00:00"
+            "time": "2016-08-13T15:39:00+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -114,6 +128,36 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "apache/log4php",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git-wip-us.apache.org/repos/asf/logging-log4php.git",
+                "reference": "cac428b6f67d2035af39784da1d1a299ef42fcf2"
+            },
+            "require": {
+                "php": ">=5.2.7"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/main/php/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "A versatile logging framework for PHP",
+            "homepage": "http://logging.apache.org/log4php/",
+            "keywords": [
+                "log",
+                "logging",
+                "php"
+            ],
+            "time": "2012-10-26T09:13:25+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.0.5",

@@ -1,7 +1,7 @@
 {
     "name": "phpmailer-shell/phpmailer-shell",
     "type": "library",
-    "description": "Provide a way for PHPMailer to send mail in syna or async.",
+    "description": "PHP邮件发送外壳程序，集邮件发送（同步&异步）、收取于一体，使应用能够更加方便的嵌入邮件系统。",
     "authors": [
         {
             "name": "Koma",
@@ -14,7 +14,7 @@
     "require": {
         "php": ">=5.3",
         "phpmailer/phpmailer": "~5.2",
-        "apache/log4php": "~2.0"
+        "php-imap/php-imap": "~2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.0"
