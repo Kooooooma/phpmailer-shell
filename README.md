@@ -6,6 +6,13 @@ phpmailer-shell是一个邮件发送外壳程序，支持邮件发送（同步�
 * 依赖 php-imap 实现邮件收取
 * 邮件异步发送依赖驱动器类实现，目前已实现的是基于Kafka。也可编写自己的驱动器类实现异步发送。
 
+# 安装使用
+```composer
+"require": {
+    "phpmailer/phpmailer": "~1.0"
+}
+```
+
 # 测试运行
 ```shell
 cd /path/phpmailer-shell
