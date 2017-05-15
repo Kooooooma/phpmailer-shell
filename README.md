@@ -9,7 +9,7 @@ phpmailer-shell是一个邮件发送外壳程序，支持邮件发送（同步�
 # 安装使用
 ```composer
 "require": {
-    "phpmailer/phpmailer": "~1.0"
+    "phpmailer-shell/phpmailer-shell": "~1.0"
 }
 ```
 
