@@ -30,6 +30,7 @@ class SMTPSender
 
         $phpMailer->isSMTP();
         $phpMailer->SMTPDebug = 2;
+        $phpMailer->CharSet = 'utf8';
 
         $phpMailer->Host = $this->sender->host;
         $phpMailer->Port = $this->sender->port;
