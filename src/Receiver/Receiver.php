@@ -97,7 +97,7 @@ class Receiver extends IReceiver
     public function receive()
     {
         $class = '\PHPMailerShell\Receiver\\'.$this->class;
-        $receiver = $this->class = new $class($this);
+        $receiver = new $class($this);
 
         return $receiver->receive();
     }

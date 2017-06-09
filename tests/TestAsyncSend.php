@@ -37,7 +37,7 @@ class TestAsyncSend extends TestCase
 
         $mailBean = new MailBean();
         $mailBean->setFrom('ticket.support@easemob.com')
-            ->setSubject('test for phpmailerShell send email async------2')
+            ->setSubject('test for phpmailerShell send email async------1')
             ->setBody('<h1>this is a h1</h1>')
             ->setTo(array('komazhang@foxmail.com', 'zhangqiang@easemob.com'))
             ->setReplyTo('501729495@qq.com');

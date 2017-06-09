@@ -108,8 +108,8 @@ class Sender extends ISender
 
     public function doSend()
     {
-        $class = '\PHPMailerShell\Sender\\'.$this->class;
-        $sender = $this->class = new $class($this);
+        $class  = '\PHPMailerShell\Sender\\'.$this->class;
+        $sender = new $class($this);
 
         return $sender->send();
     }
@@ -120,7 +120,7 @@ class Sender extends ISender
         $driverConfig = Mailer::$config->sender[$driver];
 
         $driver = '\PHPMailerShell\Driver\\'.$driver;
-        $driver = $this->driver = new $driver($driverConfig);
+        $driver = new $driver($driverConfig);
 
         return $driver;
     }
