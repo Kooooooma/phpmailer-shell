@@ -19,7 +19,7 @@ $mailer::$config->setDriverConfig(array(
 $mailer::$config->setSenderConfig(array(
     'auth' => true,
     'username' => 'ticket.support@easemob.com',
-    'password' => 'jyowkqagb2yP9j',
+    'password' => 'password',
     'host' => 'smtp.exmail.qq.com',
     'port' => 587,
     'secure' => 'tsl',
