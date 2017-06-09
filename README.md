@@ -19,7 +19,7 @@ cd /path/phpmailer-shell
 phpunit -c tests/phpunit.xml.dist
 ```
 # 使用示例
-请参考测试用例
+请参考测试用例，Kafka异步消费请参考 tests/testConsumer.php
 
 # 反馈
 请提 issue
