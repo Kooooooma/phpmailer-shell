@@ -65,28 +65,60 @@ class Kafka
         return true;
     }
 
-    public function consume()
+    public function consume($callback)
     {
         $conf = new \RdKafka\Conf();
+
+        $conf->setRebalanceCb(function (\RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) {
+            switch ($err) {
+                case RD_KAFKA_RESP_ERR__ASSIGN_PARTITIONS:
+                    echo "Assign\n";
+                    $kafka->assign($partitions);
+                    break;
+                case RD_KAFKA_RESP_ERR__REVOKE_PARTITIONS:
+                    echo "Revoke\n";
+                    $kafka->assign(NULL);
+                    break;
+                default:
+                    throw new \Exception($err);
+                    break;
+            }
+        });
+
         //设置consumer组Id，组里的每个consumer将会均衡的消费各条记录
         $conf->set('group.id', $this->config['group.id']);
         $conf->set('bootstrap.servers', $this->config['bootstrap.servers']);
 
         $topicConf = new \RdKafka\TopicConf();
+
         //设置consumer的offset存储位置为broker，可选项为file，表示本地文件，需要指明路径
         $topicConf->set('offset.store.method', 'broker');
-        //设置从头开始消费
-        $topicConf->set('auto.offset.reset', 'smallest');
+
+        //设置开始消费起点（beginning, latest）
+        $topicConf->set('auto.offset.reset', $this->config['offset']);
 
         $conf->setDefaultTopicConf($topicConf);
+
         $consumer = new \RdKafka\KafkaConsumer($conf);
         $consumer->subscribe($this->config['topic']);
 
-        $message = $consumer->consume(30*1000);
-        if ( $message->err == RD_KAFKA_RESP_ERR_NO_ERROR ) {
-            return $message->payload;
-        }
+        while ( true ) {
+            $message = $consumer->consume($this->config['timeout']);
 
-        return $message->err;
+            switch ($message->err) {
+                case RD_KAFKA_RESP_ERR_NO_ERROR:
+                    if ( is_callable($callback) ) call_user_func_array($callback, array($message->payload));
+                    break;
+                case RD_KAFKA_RESP_ERR__PARTITION_EOF:
+                    echo "No more messages\n";
+                    break;
+                case RD_KAFKA_RESP_ERR__TIMED_OUT:
+                    echo "Timed out\n";
+                    break;
+                default:
+                    throw new \Exception($message->errstr(), $message->err);
+                    break;
+            }
+        }
     }
 }

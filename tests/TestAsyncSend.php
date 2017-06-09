@@ -36,41 +36,14 @@ class TestAsyncSend extends TestCase
         ));
 
         $mailBean = new MailBean();
-        $mailBean->setFrom('xxx@yy.com')
-            ->setSubject('test for phpmailerShell send email async')
+        $mailBean->setFrom('ticket.support@easemob.com')
+            ->setSubject('test for phpmailerShell send email async------2')
             ->setBody('<h1>this is a h1</h1>')
             ->setTo(array('komazhang@foxmail.com', 'zhangqiang@easemob.com'))
             ->setReplyTo('501729495@qq.com');
 
         $ret = $mailer->send($mailBean, true);
 
-        var_dump($ret);
-    }
-
-    public function testConsume()
-    {
-        //必须要设置时区
-        date_default_timezone_set('Etc/UTC');
-
-        $mailer = new Mailer();
-
-        $mailer::$config->setDriverConfig(array(
-            'bootstrap.servers' => '172.17.0.6:9092',
-            'group.id' => 'TicketMailConsumer',
-            'topic' => ['tickets-email'] //注意对于消费者而言，topic是一个数组
-        ));
-
-        $mailer::$config->setSenderConfig(array(
-            'auth' => true,
-            'username' => 'xxx@yy.com',
-            'password' => 'PASSWORD',
-            'host' => 'smtp.exmail.qq.com',
-            'port' => 587,
-            'secure' => 'tsl',
-            'autoTSL' => true
-        ));
-
-        $ret = $mailer->consume();
         var_dump($ret);
     }
 }

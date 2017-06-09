@@ -96,15 +96,14 @@ class Sender extends ISender
 
     public function consume()
     {
-        $driver  = $this->getDriver();
-        $payload = json_decode($driver->consume(), true);
-        if ( !is_array($payload) ) {
-            return false;
-        }
+        $driver = $this->getDriver();
 
-        $this->mailBean = new MailBean($payload);
+        $driver->consume(function($payload) {
+            $payload = json_decode($payload, true);
 
-        return $this->doSend();
+            $this->mailBean = new MailBean($payload);
+            return $this->doSend();
+        });
     }
 
     public function doSend()
