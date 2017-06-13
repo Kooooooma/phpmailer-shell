@@ -65,7 +65,7 @@ class Kafka
         return true;
     }
 
-    public function consume($callback)
+    public function consume($callback, $debug = false)
     {
         $conf = new \RdKafka\Conf();
 
@@ -107,7 +107,7 @@ class Kafka
 
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                    if ( is_callable($callback) ) call_user_func_array($callback, array($message->payload));
+                    if ( is_callable($callback) ) call_user_func_array($callback, array($message->payload, $debug));
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
                     echo "No more messages\n";

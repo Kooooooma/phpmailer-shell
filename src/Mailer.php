@@ -47,11 +47,11 @@ class Mailer
         return $sender->send($mailBean, $async);
     }
 
-    public function consume()
+    public function consume($debug = false)
     {
         $sender = new Sender();
 
-        return $sender->consume();
+        return $sender->consume($debug);
     }
 
     public function receive()
@@ -59,6 +59,11 @@ class Mailer
         $receiver = new Receiver();
 
         return $receiver->receive();
+    }
+
+    public static function log($message)
+    {
+        error_log('phpmailer-shell: '.$message);
     }
 
     private function initConfig()

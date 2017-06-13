@@ -30,7 +30,7 @@ class SMTPSender
 
         $phpMailer->isSMTP();
         $phpMailer->SMTPDebug = 2;
-        $phpMailer->CharSet = 'utf8';
+        $phpMailer->CharSet = 'utf-8';
 
         $phpMailer->Host = $this->sender->host;
         $phpMailer->Port = $this->sender->port;
@@ -42,6 +42,10 @@ class SMTPSender
         if ( $phpMailer->SMTPAuth ) {
             $phpMailer->Username = $this->sender->username;
             $phpMailer->Password = $this->sender->password;
+
+            if ( $phpMailer->Username != $this->mailBean->getFrom() ) {
+                $this->mailBean->setFrom($phpMailer->Username);
+            }
         }
 
         $phpMailer->setFrom($this->mailBean->getFrom(), $this->mailBean->getFromName());
