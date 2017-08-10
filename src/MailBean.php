@@ -51,11 +51,16 @@ class MailBean
      */
     public $attachments;
 
+    /**
+     * Array 当前邮件发送时的 sender 配置信息
+     */
+    public $senderConfig;
+
     public function __construct(Array $mailInfo = array())
     {
-        if ( !empty($mailInfo) ) {
+        if (!empty($mailInfo)) {
             $rf = new \ReflectionObject($this);
-            foreach ( $mailInfo as $propName => $value ) {
+            foreach ($mailInfo as $propName => $value) {
                 $property = $rf->getProperty($propName);
                 $property->setValue($this, $value);
             }
@@ -136,13 +141,13 @@ class MailBean
 
     public function setCC($cc)
     {
-        if ( is_string($cc) ) {
+        if (is_string($cc)) {
             $this->cc[$cc] = '';
-        } else if ( is_array($cc) ) {
-            foreach ( $cc as $key => $val ) {
-                if ( is_numeric($key) ) {
+        } else if (is_array($cc)) {
+            foreach ($cc as $key => $val) {
+                if (is_numeric($key)) {
                     $this->cc[$val] = '';
-                } else if ( is_string($key) ) {
+                } else if (is_string($key)) {
                     $this->cc[$key] = $val;
                 }
             }
@@ -158,13 +163,13 @@ class MailBean
 
     public function setBCC($bcc)
     {
-        if ( is_string($bcc) ) {
+        if (is_string($bcc)) {
             $this->bcc[$bcc] = '';
-        } else if ( is_array($bcc) ) {
-            foreach ( $bcc as $key => $val ) {
-                if ( is_numeric($key) ) {
+        } else if (is_array($bcc)) {
+            foreach ($bcc as $key => $val) {
+                if (is_numeric($key)) {
                     $this->bcc[$val] = '';
-                } else if ( is_string($key) ) {
+                } else if (is_string($key)) {
                     $this->bcc[$key] = $val;
                 }
             }
@@ -180,13 +185,13 @@ class MailBean
 
     public function setTo($to)
     {
-        if ( is_string($to) ) {
+        if (is_string($to)) {
             $this->to[$to] = '';
-        } else if ( is_array($to) ) {
-            foreach ( $to as $key => $val ) {
-                if ( is_numeric($key) ) {
+        } else if (is_array($to)) {
+            foreach ($to as $key => $val) {
+                if (is_numeric($key)) {
                     $this->to[$val] = '';
-                } else if ( is_string($key) ) {
+                } else if (is_string($key)) {
                     $this->to[$key] = $val;
                 }
             }
@@ -202,13 +207,13 @@ class MailBean
 
     public function setReplyTo($replyTo)
     {
-        if ( is_string($replyTo) ) {
+        if (is_string($replyTo)) {
             $this->replyTo[$replyTo] = '';
-        } else if ( is_array($replyTo) ) {
-            foreach ( $replyTo as $key => $val ) {
-                if ( is_numeric($key) ) {
+        } else if (is_array($replyTo)) {
+            foreach ($replyTo as $key => $val) {
+                if (is_numeric($key)) {
                     $this->replyTo[$val] = '';
-                } else if ( is_string($key) ) {
+                } else if (is_string($key)) {
                     $this->replyTo[$key] = $val;
                 }
             }
@@ -225,6 +230,17 @@ class MailBean
     public function setAttachments($attachments)
     {
         $this->attachments = $attachments;
+        return $this;
+    }
+
+    public function getSenderConfig()
+    {
+        return $this->senderConfig;
+    }
+
+    public function setSenderConfig($config)
+    {
+        $this->senderConfig = $config;
         return $this;
     }
 

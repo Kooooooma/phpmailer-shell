@@ -29,7 +29,7 @@ class TestAsyncSend extends TestCase
         $mailer = new Mailer();
 
         $mailer::$config->setDriverConfig(array(
-            'bootstrap.servers' => '172.17.0.6:9092',
+            'bootstrap.servers' => '192.168.1.6:9092',
             'message.send.max.retries' => 3,
             'client.id' => 'TicketsMailKafka',
             'topic' => 'tickets-email',
@@ -41,6 +41,16 @@ class TestAsyncSend extends TestCase
             ->setBody('<h1>this is a h1</h1>')
             ->setTo(array('komazhang@foxmail.com', 'zhangqiang@easemob.com'))
             ->setReplyTo('501729495@qq.com');
+
+        $mailBean->setSenderConfig(array(
+            'auth' => true,
+            'username' => 'ticket.support@easemob.com',
+            'password' => 'password',
+            'host' => 'smtp.exmail.qq.com',
+            'port' => 587,
+            'secure' => 'tsl',
+            'autoTSL' => true
+        ));
 
         $ret = $mailer->send($mailBean, true);
 

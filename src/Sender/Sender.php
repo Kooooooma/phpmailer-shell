@@ -73,7 +73,10 @@ class Sender extends ISender
     public function __construct()
     {
         $this->class = Mailer::$config->sender['class'];
+    }
 
+    public function initSenderConfig()
+    {
         if ( isset(Mailer::$config->sender[$this->class]) ) {
             foreach ( Mailer::$config->sender[$this->class] as $config => $value ) {
                 $this->{$config} = $value;
@@ -100,9 +103,16 @@ class Sender extends ISender
 
         $driver->consume(function($payload, $debug) {
             if ( $debug ) Mailer::log($payload);
-            $payload = json_decode($payload, true);
 
+            $payload = json_decode($payload, true);
             $this->mailBean = new MailBean($payload);
+
+            $senderConfig = $this->mailBean->getSenderConfig();
+            if (!empty($senderConfig)) {
+                Mailer::$config->setSenderConfig($senderConfig);
+                $this->initSenderConfig();
+            }
+
             return $this->doSend();
         }, $debug);
     }
